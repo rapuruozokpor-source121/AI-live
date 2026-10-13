@@ -2,527 +2,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI LIVE - Interactive AI Entertainment</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0d0d18;
-      color: white;
-    }
-
-    header {
-      background: #171727;
-      padding: 18px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #333;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-      color: #ff4081;
-    }
-
-    .live-badge {
-      background: #ff1744;
-      padding: 7px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-    }
-
-    .container {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 20px;
-      padding: 20px;
-      max-width: 1400px;
-      margin: auto;
-    }
-
-    .video-section,
-    .chat-section {
-      background: #191929;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid #303044;
-    }
-
-    .video-container {
-      position: relative;
-      background: black;
-      text-align: center;
-    }
-
-    #avatarVideo {
-      width: 100%;
-      height: 570px;
-      object-fit: contain;
-      display: block;
-    }
-
-    .video-label {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: #ff1744;
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-weight: bold;
-    }
-
-    .gift-animation {
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 60px;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 10;
-    }
-
-    .gift-animation.show {
-      animation: giftPop 1.5s ease;
-    }
-
-    @keyframes giftPop {
-      0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.3);
-      }
-
-      40% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1.5);
-      }
-
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -100%) scale(1);
-      }
-    }
-
-    .host-info {
-      padding: 20px;
-    }
-
-    .host-info h2 {
-      margin-top: 0;
-    }
-
-    #hostStatus {
-      color: #bbb;
-      font-size: 14px;
-    }
-
-    .chat-section {
-      display: flex;
-      flex-direction: column;
-      min-height: 650px;
-    }
-
-    .chat-header {
-      padding: 20px;
-      border-bottom: 1px solid #333;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    #chatMessages {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-      height: 370px;
-      max-height: 370px;
-    }
-
-    .message {
-      margin-bottom: 12px;
-      background: #24243a;
-      padding: 10px;
-      border-radius: 10px;
-      overflow-wrap: anywhere;
-    }
-
-    .message strong {
-      color: #ff80ab;
-    }
-
-    .chat-input {
-      display: flex;
-      gap: 8px;
-      padding: 15px;
-      border-top: 1px solid #333;
-    }
-
-    .chat-input input {
-      flex: 1;
-      min-width: 0;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      outline: none;
-    }
-
-    .chat-input button,
-    .gift {
-      border: none;
-      cursor: pointer;
-      border-radius: 10px;
-      font-weight: bold;
-    }
-
-    .chat-input button {
-      background: #ff4081;
-      color: white;
-      padding: 12px;
-    }
-
-    .gifts {
-      padding: 15px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      border-top: 1px solid #333;
-    }
-
-    .gift {
-      background: #35304e;
-      color: white;
-      padding: 12px;
-      flex: 1;
-      transition: 0.2s;
-    }
-
-    .gift:hover {
-      background: #ff4081;
-      transform: scale(1.05);
-    }
-
-    @media (max-width: 850px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
-
-      #avatarVideo {
-        height: 450px;
-      }
-
-      .chat-section {
-        min-height: 500px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI LIVE - Luna</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #10101d;
+  color: white;
+}
+header {
+  padding: 18px;
+  background: #1c1c31;
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+}
+header span { color: #ff4f99; }
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 20px;
+}
+.panel {
+  background: #202038;
+  border-radius: 16px;
+  padding: 15px;
+}
+video {
+  width: 100%;
+  max-height: 600px;
+  border-radius: 12px;
+  background: black;
+  object-fit: contain;
+}
+.status { color: #a4ffb3; font-size: 14px; }
+.gifts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+button {
+  background: #ff4f99;
+  border: 0;
+  color: white;
+  border-radius: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+button:hover { background: #db307b; }
+button:disabled { opacity: .5; cursor: wait; }
+#messages {
+  height: 410px;
+  overflow-y: auto;
+  background: #151526;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.message {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+.user { background: #35355c; }
+.ai { background: #572b4d; }
+.chat-input { display: flex; gap: 8px; }
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+}
+#giftEffect {
+  text-align: center;
+  font-size: 28px;
+  min-height: 40px;
+}
+@media (max-width: 750px) {
+  main { grid-template-columns: 1fr; }
+}
+</style>
 </head>
-
 <body>
 
-  <header>
-    <div class="logo">AI LIVE</div>
-    <div class="live-badge">● LIVE DEMO</div>
-  </header>
-
-  <main class="container">
-
-    <section class="video-section">
-
-      <div class="video-container">
-
-        <video
-          id="avatarVideo"
-          autoplay
-          muted
-          loop
-          playsinline
-        >
-          <source src="avatar.mp4" type="video/mp4">
-          Your browser does not support video.
-        </video>
-
-        <div class="video-label">AI HOST</div>
-
-        <div id="giftAnimation" class="gift-animation"></div>
-
-      </div>
-
-      <div class="host-info">
-        <h2>Welcome to AI LIVE 🎉</h2>
-        <p id="hostStatus">
-          Your AI entertainer is ready!
-        </p>
-      </div>
-
-    </section>
-
-    <section class="chat-section">
-
-      <div class="chat-header">
-        💬 Live Chat
-      </div>
-
-      <div id="chatMessages">
-
-        <div class="message">
-          <strong>AI Host:</strong>
-          Welcome to AI LIVE! Send a message or a gift!
-        </div>
-
-      </div>
-
-      <form id="chatForm" class="chat-input">
-        <input
-          id="chatInput"
-          type="text"
-          placeholder="Write a message..."
-          maxlength="500"
-          required
-        >
-
-        <button type="submit">Send</button>
-      </form>
-
-      <div class="gifts">
-        <button class="gift" data-gift="❤️ Heart">
-          ❤️ Heart
-        </button>
-
-        <button class="gift" data-gift="🌹 Rose">
-          🌹 Rose
-        </button>
-
-        <button class="gift" data-gift="⭐ Star">
-          ⭐ Star
-        </button>
-      </div>
-
-    </section>
-
-  </main>
-
-  <script>
-
-    // VIDEO SETTINGS
-
-    const avatarVideo =
-      document.getElementById("avatarVideo");
-
-    const hostStatus =
-      document.getElementById("hostStatus");
-
-    const giftAnimation =
-      document.getElementById("giftAnimation");
-
-    const chatMessages =
-      document.getElementById("chatMessages");
-
-    const normalVideo = "avatar.mp4";
-    const danceVideo = "dance.mp4";
-
-    let reacting = false;
-
-
-    // ADD CHAT MESSAGE
-
-    function addMessage(sender, message) {
-
-      const messageDiv =
-        document.createElement("div");
-
-      messageDiv.className = "message";
-
-      const senderName =
-        document.createElement("strong");
-
-      senderName.textContent = sender + ": ";
-
-      messageDiv.appendChild(senderName);
-
-      messageDiv.appendChild(
-        document.createTextNode(message)
-      );
-
-      chatMessages.appendChild(messageDiv);
-
-      chatMessages.scrollTop =
-        chatMessages.scrollHeight;
-    }
-
-
-    // PLAY GIFT ANIMATION
-
-    function showGiftAnimation(giftName) {
-
-      const emoji = giftName.split(" ")[0];
-
-      giftAnimation.textContent = emoji;
-
-      giftAnimation.classList.remove("show");
-
-      void giftAnimation.offsetWidth;
-
-      giftAnimation.classList.add("show");
-    }
-
-
-    // AVATAR REACTS TO GIFT
-
-    function playGiftReaction(giftName) {
-
-      showGiftAnimation(giftName);
-
-      if (reacting) {
-        return;
-      }
-
-      reacting = true;
-
-      avatarVideo.loop = false;
-
-      avatarVideo.src = danceVideo;
-
-      avatarVideo.load();
-
-      avatarVideo.play().catch(function(error) {
-        console.error("Dance playback failed:", error);
-        returnToNormal();
-      });
-
-      hostStatus.textContent =
-        "Thank you for the " + giftName + "! 🎉";
-
-      console.log("Gift received:", giftName);
-    }
-
-
-    // RETURN TO NORMAL VIDEO
-
-    function returnToNormal() {
-
-      reacting = false;
-
-      avatarVideo.loop = true;
-
-      avatarVideo.src = normalVideo;
-
-      avatarVideo.load();
-
-      avatarVideo.play().catch(function(error) {
-        console.error("Normal video failed:", error);
-      });
-
-      hostStatus.textContent =
-        "Your AI entertainer is ready!";
-    }
-
-
-    // WHEN DANCE FINISHES
-
-    avatarVideo.addEventListener("ended", function() {
-
-      if (reacting) {
-        returnToNormal();
-      }
-
-    });
-
-
-    // VIDEO ERROR HANDLING
-
-    avatarVideo.addEventListener("error", function() {
-
-      if (reacting) {
-        hostStatus.textContent =
-          "Dance video unavailable. Check dance.mp4.";
-
-        returnToNormal();
-      } else {
-        hostStatus.textContent =
-          "Video unavailable. Check avatar.mp4.";
-      }
-
-    });
-
-
-function respondToGift(giftName) {
-  let response = "";
-
-  if (giftName.includes("Heart")) {
-    response = "Thank you for the love! ❤️";
-  } else if (giftName.includes("Rose")) {
-    response = "Aww, thank you for the beautiful rose! 🌹";
-  } else if (giftName.includes("Star")) {
-    response = "Wow! You're a superstar! ⭐";
-  } else {
-    response = "Thank you for your gift! 🎉";
-  }
-
-  addMessage("AI Host", response);
-  playGiftReaction(giftName);
+<header>✨ <span>AI LIVE</span> with Luna</header>
+
+<main>
+  <section class="panel">
+    <h2>🔴 Luna Live</h2>
+    <p class="status">● AI Host Online</p>
+
+    <video id="avatarVideo" autoplay muted loop playsinline>
+      <source src="avatar.mp4" type="video/mp4">
+    </video>
+
+    <div id="giftEffect"></div>
+
+    <h3>Send a virtual gift</h3>
+    <div class="gifts">
+      <button onclick="sendGift('Heart')">❤️ Heart</button>
+      <button onclick="sendGift('Rose')">🌹 Rose</button>
+      <button onclick="sendGift('Star')">⭐ Star</button>
+    </div>
+    <p style="font-size:12px;color:#bbb">
+      Demo gifts only. No real payments.
+    </p>
+  </section>
+
+  <section class="panel">
+    <h2>💬 Live Chat</h2>
+    <div id="messages"></div>
+
+    <form class="chat-input" id="chatForm">
+      <input
+        id="chatInput"
+        maxlength="1000"
+        placeholder="Say something to Luna..."
+        required
+      >
+      <button id="sendButton" type="submit">Send</button>
+    </form>
+  </section>
+</main>
+
+<script>
+const API_URL =
+  "https://l.rapuruozokpor-404.workers.dev";
+
+const video = document.getElementById("avatarVideo");
+const messages = document.getElementById("messages");
+const chatInput = document.getElementById("chatInput");
+const sendButton = document.getElementById("sendButton");
+const giftEffect = document.getElementById("giftEffect");
+
+let giftTimer;
+
+function addMessage(sender, text) {
+  const div = document.createElement("div");
+  div.className = "message " + (sender === "You" ? "user" : "ai");
+  div.textContent = sender + ": " + text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
 }
 
-    // GIFT BUTTONS
+addMessage("Luna", "Hello! Welcome to AI LIVE! 💕");
 
-    document.querySelectorAll("[data-gift]").forEach(
-      function(button) {
+document.getElementById("chatForm")
+  .addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-        button.addEventListener("click", function() {
+    const message = chatInput.value.trim();
+    if (!message) return;
 
-          const giftName = button.dataset.gift;
+    addMessage("You", message);
+    chatInput.value = "";
+    sendButton.disabled = true;
+    sendButton.textContent = "...";
 
-          addMessage(
-            "You",
-            "Sent a " + giftName + " gift!"
-          );
-
-         respondToGift(giftName);
-
-        });
-
-      }
-    );
-
-
-    // CHAT FORM
-
-    document.getElementById("chatForm")
-      .addEventListener("submit", function(event) {
-
-        event.preventDefault();
-
-        const chatInput =
-          document.getElementById("chatInput");
-
-        const message = chatInput.value.trim();
-
-        if (!message) {
-          return;
-        }
-
-        addMessage("You", message);
-
-        chatInput.value = "";
-
-        hostStatus.textContent =
-          "Your message is ready for the AI connection.";
-
-        addMessage(
-          "System",
-          "Chat is working! Real AI responses will be connected later."
-        );
-
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message })
       });
 
-  </script>
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Request failed");
+      }
+
+      addMessage("Luna", data.reply);
+
+    } catch (error) {
+      addMessage("Luna", "Connection problem: " + error.message);
+    } finally {
+      sendButton.disabled = false;
+      sendButton.textContent = "Send";
+      chatInput.focus();
+    }
+  });
+
+function sendGift(gift) {
+  const emojis = {
+    Heart: "❤️❤️❤️",
+    Rose: "🌹🌹🌹",
+    Star: "⭐⭐⭐"
+  };
+
+  const reactions = {
+    Heart: "Thank you for the love! ❤️",
+    Rose: "A beautiful rose! Thank you! 🌹",
+    Star: "You're a superstar! ⭐"
+  };
+
+  giftEffect.textContent = emojis[gift];
+  addMessage("Luna", reactions[gift]);
+
+  clearTimeout(giftTimer);
+
+  video.pause();
+  video.src = "dance.mp4";
+  video.loop = false;
+  video.load();
+  video.play().catch(() => {});
+
+  giftTimer = setTimeout(() => {
+    giftEffect.textContent = "";
+    restoreAvatar();
+  }, 6000);
+}
+
+function restoreAvatar() {
+  clearTimeout(giftTimer);
+  video.pause();
+  video.src = "avatar.mp4";
+  video.loop = true;
+  video.load();
+  video.play().catch(() => {});
+}
+
+video.addEventListener("ended", restoreAvatar);
+</script>
 
 </body>
 </html>
