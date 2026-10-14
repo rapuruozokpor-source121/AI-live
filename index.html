@@ -15,7 +15,9 @@
 <h2>🔴 Luna Live</h2>
 <p class="status">● AI Host Online</p>
 <div class="stage">
-<video id="avatarVideo" autoplay muted loop playsinline preload="auto" aria-label="Luna AI avatar"><source src="avatar.mp4" type="video/mp4"></video>
+<video id="videoPlayer" autoplay muted loop playsinline preload="auto" aria-label="Luna AI avatar">
+  <source src="sit%20down.mp4" type="video/mp4">
+</video>
 <div id="giftOverlay" class="overlay" role="status" aria-live="polite" hidden></div>
 </div>
 <label class="field-label" for="viewerName">Your display name</label>
@@ -40,9 +42,9 @@
 </main>
 <script>
 const API_URL="https://l.rapuruozokpor-404.workers.dev";
-const VIDEO={idle:"avatar.mp4",Heart:"heart.mp4",Rose:"rose.mp4",Star:"star.mp4"};
+const VIDEO = {Idle: "sit down.mp4", Heart: "heart.mp4", Rose: "rose.mp4", Star: "star.mp4"};
 const ICON={Heart:"❤️",Rose:"🌹",Star:"⭐"};
-const video=document.getElementById("avatarVideo");
+const video=document.getElementById("videoPlayer");
 const overlay=document.getElementById("giftOverlay");
 const nameInput=document.getElementById("viewerName");
 const messages=document.getElementById("messages");
@@ -61,7 +63,7 @@ function addMessage(sender,text){
 function playVideo(file,loop){
  video.pause();
  video.loop=loop;
-video.src = file + "?v=2";
+
  video.load();
  return video.play();
 }
@@ -74,7 +76,7 @@ function returnToIdle(){
  overlay.hidden=true;
  overlay.textContent="";
  setGiftButtons(false);
- playVideo(VIDEO.idle,true).catch(()=>{});
+ playVideo(VIDEO.Idle,true).catch(()=>{});
 }
 function sendGift(gift){
  if(reacting||!VIDEO[gift])return;
@@ -92,9 +94,9 @@ giftButtons.forEach(button=>button.addEventListener("click",()=>sendGift(button.
 video.addEventListener("ended",()=>{if(reacting)returnToIdle();});
 video.addEventListener("error",()=>{
  if(reacting){addMessage("Luna","I couldn't play that gift video. Check its filename.");returnToIdle();}
- else addMessage("Luna","The sitting video could not load. Check avatar.mp4.");
+ else addMessage("Luna","The sitting video could not load. Check the file name or upload the MP4s in the same folder as index.html.");
 });
-addMessage("Luna","Welcome to AI LIVE! 💕 Tell me your name and say hello!");
+addMessage("Luna","Welcome to AI LIVE! 💕 Tell me your name and say hello!")
 document.getElementById("chatForm").addEventListener("submit",async event=>{
  event.preventDefault();
  const message=chatInput.value.trim();
