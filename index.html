@@ -60,12 +60,12 @@ function addMessage(sender,text){
  messages.appendChild(div);
  messages.scrollTop=messages.scrollHeight;
 }
-function playVideo(file,loop){
- video.pause();
- video.loop=loop;
-
- video.load();
- return video.play();
+function playVideo(file, loop) {
+  video.pause();
+  video.loop = loop;
+  video.src = file;
+  video.load();
+  return video.play();
 }
 function setGiftButtons(disabled){giftButtons.forEach(button=>button.disabled=disabled);}
 function returnToIdle(){
