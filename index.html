@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI LIVE | Luna</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#10101d;color:#fff;font-family:Arial,sans-serif}header{text-align:center;background:#1c1c31;padding:20px;font-size:25px;font-weight:bold}header span{color:#ff5a9f}main{max-width:1200px;margin:auto;padding:20px;display:grid;grid-template-columns:1.5fr 1fr;gap:20px}.panel{background:#202038;border-radius:16px;padding:16px}.stage{position:relative;background:#000;border-radius:14px;overflow:hidden}.stage video{display:block;width:100%;max-height:640px;aspect-ratio:9/12;object-fit:contain}.overlay{position:absolute;left:5%;right:5%;bottom:12%;text-align:center;background:rgba(18,12,38,.82);padding:14px;border:2px solid #ff79b2;border-radius:16px;font-size:clamp(18px,3vw,32px);font-weight:800;overflow-wrap:anywhere;animation:pop .3s ease-out;pointer-events:none}.overlay[hidden]{display:none}@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}.status{color:#a4ffb3;font-size:14px}.gifts{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}button{border:0;border-radius:10px;padding:12px 15px;background:#ff4f99;color:#fff;cursor:pointer;font-weight:bold}button:hover{background:#d9377d}button:disabled{opacity:.5;cursor:wait}input{width:100%;min-width:0;padding:12px;border:0;border-radius:8px;background:#fff;color:#151525}.field-label{display:block;margin:12px 0 6px;font-weight:bold}#messages{height:420px;overflow:auto;background:#151526;border-radius:10px;padding:12px;margin:12px 0}.message{padding:10px;margin-bottom:10px;border-radius:10px;overflow-wrap:anywhere}.user{background:#35355c}.ai{background:#572b4d}.chat-input{display:flex;gap:8px}.chat-input input{flex:1}.hint{font-size:12px;color:#c9c9d8;line-height:1.5}@media(max-width:760px){main{grid-template-columns:1fr;padding:12px}.stage video{max-height:65vh}}
+</style>
+</head>
+<body>
+<header>✨ <span>AI LIVE</span> with Luna</header>
+<main>
+<section class="panel">
+<h2>🔴 Luna Live</h2>
+<p class="status">● AI Host Online</p>
+<div class="stage">
+<video id="avatarVideo" autoplay muted loop playsinline preload="auto" aria-label="Luna AI avatar"><source src="avatar.mp4" type="video/mp4"></video>
+<div id="giftOverlay" class="overlay" role="status" aria-live="polite" hidden></div>
+</div>
+<label class="field-label" for="viewerName">Your display name</label>
+<input id="viewerName" maxlength="30" placeholder="Enter your name" autocomplete="nickname">
+<h3>Send Luna a gift</h3>
+<div class="gifts">
+<button type="button" data-gift="Heart">❤️ Heart</button>
+<button type="button" data-gift="Rose">🌹 Rose</button>
+<button type="button" data-gift="Star">⭐ Star</button>
+</div>
+<p class="hint">Demo gifts only — no payment. Gifts are played one at a time. Video playback requires your four MP4 files to be uploaded alongside index.html.</p>
+</section>
+<section class="panel">
+<h2>💬 Chat with Luna</h2>
+<div id="messages" aria-live="polite"></div>
+<form id="chatForm" class="chat-input">
+<input id="chatInput" maxlength="1000" placeholder="Say something to Luna..." aria-label="Chat message" required>
+<button id="sendButton" type="submit">Send</button>
+</form>
+<p class="hint">Luna's replies appear as text. The videos are prerecorded, not lip-synced to the AI replies.</p>
+</section>
+</main>
+<script>
+const API_URL="https://l.rapuruozokpor-404.workers.dev";
+const VIDEO={idle:"avatar.mp4",Heart:"heart.mp4",Rose:"rose.mp4",Star:"star.mp4"};
+const ICON={Heart:"❤️",Rose:"🌹",Star:"⭐"};
+const video=document.getElementById("avatarVideo");
+const overlay=document.getElementById("giftOverlay");
+const nameInput=document.getElementById("viewerName");
+const messages=document.getElementById("messages");
+const chatInput=document.getElementById("chatInput");
+const sendButton=document.getElementById("sendButton");
+const giftButtons=[...document.querySelectorAll("[data-gift]")];
+let reacting=false;
+let fallbackTimer=null;
+function addMessage(sender,text){
+ const div=document.createElement("div");
+ div.className="message "+(sender==="You"?"user":"ai");
+ div.textContent=sender+": "+text;
+ messages.appendChild(div);
+ messages.scrollTop=messages.scrollHeight;
+}
+function playVideo(file,loop){
+ video.pause();
+ video.loop=loop;
+ video.src=file;
+ video.load();
+ return video.play();
+}
+function setGiftButtons(disabled){giftButtons.forEach(button=>button.disabled=disabled);}
+function returnToIdle(){
+ if(!reacting)return;
+ reacting=false;
+ clearTimeout(fallbackTimer);
+ fallbackTimer=null;
+ overlay.hidden=true;
+ overlay.textContent="";
+ setGiftButtons(false);
+ playVideo(VIDEO.idle,true).catch(()=>{});
+}
+function sendGift(gift){
+ if(reacting||!VIDEO[gift])return;
+ const name=nameInput.value.trim().slice(0,30)||"Friend";
+ reacting=true;
+ setGiftButtons(true);
+ overlay.textContent=ICON[gift]+" Thank you, "+name+", for the "+gift+"! "+ICON[gift];
+ overlay.hidden=false;
+ addMessage("Luna","Thank you, "+name+", for the "+gift+"! "+ICON[gift]);
+ playVideo(VIDEO[gift],false).catch(()=>returnToIdle());
+ // Recovery in case a video stalls; normal completion uses the ended event.
+ fallbackTimer=setTimeout(returnToIdle,30000);
+}
+giftButtons.forEach(button=>button.addEventListener("click",()=>sendGift(button.dataset.gift)));
+video.addEventListener("ended",()=>{if(reacting)returnToIdle();});
+video.addEventListener("error",()=>{
+ if(reacting){addMessage("Luna","I couldn't play that gift video. Check its filename.");returnToIdle();}
+ else addMessage("Luna","The sitting video could not load. Check avatar.mp4.");
+});
+addMessage("Luna","Welcome to AI LIVE! 💕 Tell me your name and say hello!");
+document.getElementById("chatForm").addEventListener("submit",async event=>{
+ event.preventDefault();
+ const message=chatInput.value.trim();
+ if(!message)return;
+ addMessage("You",message);
+ chatInput.value="";
+ sendButton.disabled=true;
+ sendButton.textContent="...";
+ try{
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),20000);
+  let response;
+  try{
+   response=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message}),signal:controller.signal});
+  }finally{clearTimeout(timeout);}
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.error||"Request failed");
+  addMessage("Luna",data.reply||"Hi there! 💕");
+ }catch(error){
+  addMessage("Luna","Chat connection problem: "+(error.name==="AbortError"?"Request timed out":error.message));
+ }finally{
+  sendButton.disabled=false;
+  sendButton.textContent="Send";
+ }
+});
+</script>
+</body>
+</html>
