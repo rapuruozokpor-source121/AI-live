@@ -115,6 +115,7 @@ document.getElementById("chatForm").addEventListener("submit",async event=>{
   const data=await response.json();
   if(!response.ok)throw new Error(data.error||"Request failed");
   addMessage("Luna",data.reply||"Hi there! 💕");
+  speakLuna(data.reply||"Hi there! 💕");
  }catch(error){
   addMessage("Luna","Chat connection problem: "+(error.name==="AbortError"?"Request timed out":error.message));
  }finally{
@@ -122,6 +123,33 @@ document.getElementById("chatForm").addEventListener("submit",async event=>{
   sendButton.textContent="Send";
  }
 });
+
+function speakLuna(message) {
+    if (!("speechSynthesis" in window)) {
+        console.log("Voice is not supported.");
+        return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const speech = new SpeechSynthesisUtterance(message);
+    speech.lang = "en-US";
+    speech.rate = 0.95;
+    speech.pitch = 1.1;
+    speech.volume = 1;
+
+    const voices = window.speechSynthesis.getVoices();
+    const femaleVoice = voices.find(v =>
+        /female|zira|aria|samantha|jenny/i.test(v.name)
+    );
+
+    if (femaleVoice) {
+        speech.voice = femaleVoice;
+    }
+
+    window.speechSynthesis.speak(speech);
+}
+
 </script>
 </body>
 </html>
