@@ -124,30 +124,40 @@ document.getElementById("chatForm").addEventListener("submit",async event=>{
  }
 });
 
-function speakLuna(message) {
-    if (!("speechSynthesis" in window)) {
-        console.log("Voice is not supported.");
-        return;
+function speakLuna(message){
+    try {
+        const response = await fetch(
+            "https://l.rapuruozokpor-404.workers.dev",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action: "speak",
+                    text: message
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Voice request failed");
+        }
+
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        const audio = new Audio(audioUrl);
+
+        audio.onended = () => {
+            URL.revokeObjectURL(audioUrl);
+        };
+
+        await audio.play();
+
+    } catch (error) {
+        console.error("Luna voice error:", error);
     }
-
-    window.speechSynthesis.cancel();
-
-    const speech = new SpeechSynthesisUtterance(message);
-    speech.lang = "en-US";
-    speech.rate = 0.95;
-    speech.pitch = 1.1;
-    speech.volume = 1;
-
-    const voices = window.speechSynthesis.getVoices();
-    const femaleVoice = voices.find(v =>
-        /female|zira|aria|samantha|jenny/i.test(v.name)
-    );
-
-    if (femaleVoice) {
-        speech.voice = femaleVoice;
-    }
-
-    window.speechSynthesis.speak(speech);
 }
 
 </script>
