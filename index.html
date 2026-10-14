@@ -61,7 +61,7 @@ function addMessage(sender,text){
 function playVideo(file,loop){
  video.pause();
  video.loop=loop;
- video.src=file;
+video.src = file + "?v=2";
  video.load();
  return video.play();
 }
